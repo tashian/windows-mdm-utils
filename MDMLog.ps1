@@ -18,7 +18,7 @@ foreach ($event in $events) {
     # Check if only errors should be displayed
     # Check if a search string is provided and the message contains the search string
     if ((-not $errorsOnly -or $event.LevelDisplayName -eq "Error") -and (-not $searchString -or $event.Message -like "*$searchString*")) {
-        $levelEmoji = if ($event.LevelDisplayName -eq "Information") { [char]0x1F197 } else { [char]0x1F645 }
+        $levelEmoji = if ($event.LevelDisplayName -eq "Information") { "`u{1F197}" } else { "`u{1F645}" }
         Write-Host "$levelEmoji $($event.LevelDisplayName) $($event.TimeCreated) $($event.Id)"
 
         # Display additional lines for the message
