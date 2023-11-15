@@ -8,4 +8,9 @@ git clone https://github.com/tashian/windows-mdm-utils
 Set-ExecutionPolicy RemoteSigned
 
 # return to your user terminal and use the utilities.
+.\MDMLog.ps1 SCEP
+.\MDMLog.ps1 -errorsOnly WiFi
+.\ListCerts.ps1 Intune
+.\ListCerts.ps1 -expired MDM
+.\ListCerts.ps1 -clientOnly
 ```
