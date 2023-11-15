@@ -21,7 +21,6 @@ function Show-CertificateInfo($cert, $storeLocation) {
     Write-Host "Subject: $($cert.Subject)"
     Write-Host "Issuer: $($cert.Issuer)"
     Write-Host "Thumbprint: $($cert.Thumbprint)"
-    Write-Host "Friendly Name: $($cert.FriendlyName)"
     Write-Host "Not Before: $($cert.NotBefore)"
     Write-Host "Not After: $($cert.NotAfter)"
     Write-Host "`n"  # Add a newline for better readability
@@ -37,9 +36,9 @@ foreach ($storePath in $stores) {
     $certificates = Get-ChildItem -Path "Cert:\$storePath"
 
     foreach ($cert in $certificates) {
-        # If a search string is provided and (the subject contains the search string or the clientOnly switch is specified and the certificate has Client Authentication extended key usage)
+        # If a search string is provided and (the subject or issuer contains the search string or the clientOnly switch is specified and the certificate has Client Authentication extended key usage)
         if (
-            (-not $searchString -or $cert.Subject -like "*$searchString*") -and
+            (-not $searchString -or $cert.Subject -like "*$searchString*" -or $cert.Issuer -like "*$searchString*") -and
             (-not $clientOnly -or (HasClientAuthenticationExtendedKeyUsage $cert))
         ) {
             Show-CertificateInfo -cert $cert -storeLocation $storeLocation
