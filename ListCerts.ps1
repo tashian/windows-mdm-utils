@@ -1,6 +1,7 @@
 param (
     [string]$searchString,
-    [switch]$clientOnly
+    [switch]$clientOnly,
+    [switch]$expired
 )
 
 # Function to check if a certificate has Client Authentication extended key usage
@@ -37,9 +38,11 @@ foreach ($storePath in $stores) {
 
     foreach ($cert in $certificates) {
         # If a search string is provided and (the subject or issuer contains the search string or the clientOnly switch is specified and the certificate has Client Authentication extended key usage)
+        # Also, check if the certificate is currently valid or the -expired switch is specified
         if (
             (-not $searchString -or $cert.Subject -like "*$searchString*" -or $cert.Issuer -like "*$searchString*") -and
-            (-not $clientOnly -or (HasClientAuthenticationExtendedKeyUsage $cert))
+            (-not $clientOnly -or (HasClientAuthenticationExtendedKeyUsage $cert)) -and
+            ($expired.IsPresent -or ($cert.NotBefore -le (Get-Date) -and $cert.NotAfter -ge (Get-Date)))
         ) {
             Show-CertificateInfo -cert $cert -storeLocation $storeLocation
         }
