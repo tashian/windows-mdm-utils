@@ -4,11 +4,9 @@ param (
 
 # Function to display certificate information
 function Show-CertificateInfo($cert, $storeLocation) {
-    Write-Host "Trust Store: $storeLocation"
     Write-Host "Subject: $($cert.Subject)"
     Write-Host "Issuer: $($cert.Issuer)"
     Write-Host "Thumbprint: $($cert.Thumbprint)"
-    Write-Host "Friendly Name: $($cert.FriendlyName)"
     Write-Host "Not Before: $($cert.NotBefore)"
     Write-Host "Not After: $($cert.NotAfter)"
     Write-Host "`n"  # Add a newline for better readability
@@ -20,6 +18,8 @@ $stores = @("CurrentUser\Root", "CurrentUser\CA", "CurrentUser\My", "LocalMachin
 foreach ($storePath in $stores) {
     $storeLocation = $storePath -replace "(.*?)\\.*", '$1'
     $storeName = $storePath -replace ".*?\\(.*)", '$1'
+    Write-Host "Trust Store: $storeLocation"
+    Write-Host "------------------------------"
     
     $certificates = Get-ChildItem -Path "Cert:\$storePath"
 
