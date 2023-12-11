@@ -9,6 +9,7 @@ $numberOfEvents = 50
 
 # Retrieve the most recent 50 events from the specified log
 $events = Get-WinEvent -LogName $logName -MaxEvents $numberOfEvents | Sort-Object TimeCreated -Descending
+[array]::Reverse($events)
 
 # Display details of each event
 foreach ($event in $events) {
